@@ -17,21 +17,21 @@
       <% if(messages.success) { %>
         <div class="alert alert-success" role="alert"><%- messages.success %>
       <% } %>
-
       <% if (messages.error) { %>
       <div class="alert alert-danger" role="alert"><%- messages.error %></div>
       <% } %>
+      <!--Begin User Data Form-->
         <form action="/login/studentregister" method="post">
         <div class="form-group">
             <label>First Name:</label>
-            <input type="text" class="form-control" name="firstname" value="<%= firstname %>" placeholder="Enter First Name" autocomplete="off">
+            <input type="text" class="form-control" name="firstname" placeholder="Enter First Name" autocomplete="off">
             <label>Last Name:</label>
-            <input type="text" class="form-control" name="lastname" value="<%= lastname %>" placeholder="Enter Last Name" autocomplete="off">
-            <label>RCC Student ID</label>
-            <input type="text" class="form-control" name="rccid" value="<%= rccid %>" placeholder="Enter RCC ID" autocomplete="off">
-            <label>Email</label>
-            <input type="email" class="form-control" name="email" value="<%= email %>" placeholder="Enter Email" autocomplete="off">
-        </div>
+            <input type="text" class="form-control" name="lastname" placeholder="Enter Last Name" autocomplete="off">
+            <label>Email:</label>
+            <input type="email" class="form-control" name="email"  placeholder="Enter Email" autocomplete="off">
+            <label>RCC ID:</label>
+            <input type="rccid" class="form-control" name="rccid"  placeholder="Enter RCC ID" autocomplete="off">
+          </div>
         <button type="submit" class="btn btn-primary">Submit</button>
       </form>
     </div>

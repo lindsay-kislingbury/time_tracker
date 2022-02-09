@@ -27,10 +27,10 @@ router.get('/add', function(req,res,next){
 
 //Add a new course
 router.post('/add', function(req,res,next){
-    
     let name = req.body.name;
     let errors = false;
 
+    //if error
     if(name.length===0){
         errors = true;
 
