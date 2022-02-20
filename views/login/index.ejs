@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  <title>Login or Register</title>
+  <title>Register</title>
 <head>
   <%- include ../partials/head.ejs %>
 </head>
@@ -11,26 +11,22 @@
 </header>
 
 <main>
-  <div class="jumbotron">
-    <h1>Login and Register page...</h1>
-    <p>some more words</p>
-
-    <div class="list-group">
-        <a href="/login/studentregister" class="list-group-item list-group-item-action">
-          <h3>Student Registration</h3>
-          <p class="mb-1">For Students</p>
-        </a>
-        <a href="/login/profregister" class="list-group-item list-group-item-action">
-            <h3>Professor Registration</h3>
-            <p class="mb-1">For professors</p>
-        </a>
-      </div>
+  <!--Begin Login-->
+  <form action="/login/auth" method="post">
+  <div class="form-group">
+    <h3>Login Form</h3>
+    <p><%=(typeof alertMsg!='undefined')? alertMsg:''%></p>
+      <label for="email">Email address</label>
+      <input type="email" class="form-control" placeholder="Email Address" name="email">
+      <label for="password">Password</label>
+      <input type="password" class="form-control" placeholder="Password" name="password">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type ="link" a href="/register" class="btn btn-outline-success">New Registration</button>  
+    </form>
   </div>
-</main>
-
+  </main>
 <footer>
   <%- include ../partials/footer.ejs %>
 </footer>
-
-</body>
 </html>

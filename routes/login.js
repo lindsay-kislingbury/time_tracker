@@ -2,119 +2,40 @@ var express = require('express');
 var router = express.Router();
 var dbConn = require('../lib/db');
 
-
-
-//Get Log In Page
+//Get Log In Home Page
 router.get('/', function(req, res, next) {
-  res.render('login', { title: 'Login' });
-});
-
-//Display Sign In page
-router.get('/signin', function(req,res,next){
-  res.render('login/signin', {title: 'Sign In'})
-});
-
-
-
-
-//Get Student Register Page
-router.get('/studentregister', function(req,res,next){
-      //render to studentregister.ejs
-      res.render('login/studentregister', {
-        firstname: '',
-        lastname: '',
-        email: '',
-        rccid: '',
-        errors: ''
-
+    res.render('login', { 
+      title: 'Log In',
+      email: '', 
+      errors: ''
     })
-});
+  });
 
-// Add User
-router.post('/studentregister', function(req, res, next) {    
-  firstname = req.body.firstname;
-  lastname = req.body.lastname;
+//Authenticate
+router.post('/auth', function(res, req, next){
   email = req.body.email;
-  rccid = req.body.rccid;
   errors = false;
-
-  //If form is empty
-  if(firstname.length === 0 || lastname.length === 0|| email.length === 0) {
-      errors = true;
-      // set flash message
-      req.flash('error', "Please complete all fields");
-      // render flash message
-      res.render('login/studentregister', {
-          user_firstname: firstname,
-          user_lastname: lastname,
-          user_email: email,
-      })
+  
+  //Check if form is empty
+  if(email === 0){
+    errors = true;
+    req.flash('error', "Please complete all fields");
   }
-  if(!errors) {
-      //Set form data for new user
-      var form_data = {
-          user_firstname: firstname,
-          user_lastname: lastname,
-          user_email: email,
+  if(!errors){
+    dbConn.query('SELECT * FROM users WHERE user_email = ?', email, function(err, data, fields){
+      if(err) throw err
+      if(data.length>0){
+        console.log('success');
+        req.session.loggedinUser = true;
+        req.session.email = email;
+        res.redirect('/dashboard');
       }
-      //Create new user
-      dbConn.query('INSERT INTO users SET ?', form_data, function(err, result) {
-        //if(err) throw err
-        if (err) {
-            req.flash('error', err)
-        } else {                
-            //Create new student
-            //Set form data for new student
-            var form_data2 = {
-              rcc_id: rccid,
-              student_user_id: result.insertId
-            }
-            dbConn.query('INSERT INTO students SET ?', form_data2, function(err, result) {
-              //if(err) throw err
-              if (err) {
-                  req.flash('error', err)
-                  //render to login/studentregister
-                  res.render('./login/studentregister', {
-                    user_rccid: rccid
-                  })
-              } else {                
-                  req.flash('success', 'Data successfully added');
-                  res.redirect('/login');
-              }
-          })
-        }
+      else{
+        console.log('error');
+        res.render('/login', {altertMsg: 'Incorrect Email!'});
+      }
     })
   }
 })
-
-
-//Display Professor Register Page
-router.get('/profregister', function(req,res,next){
-  //render to add.ejs
-  res.render('login/profregister', {
-    firstname: '',
-    lastname: '',
-    email: ''
-  })
-});
-
-
-
-
-
-
-
-
-
-
-
-//Create 
-router.post('/profregister', function(req,res,next){
-let firstname = req.body.firstnamename;
-let lastname = req.body.lastname;
-let email = req.body.email;
-let errors = false;
-});
-
 
 module.exports = router;

@@ -13,7 +13,10 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var coursesRouter = require('./routes/courses');
 var aboutRouter = require('./routes/about');
-var loginrouter = require('./routes/login');
+var registerRouter = require('./routes/register');
+var loginRouter = require('./routes/login');
+var dashboardRouter = require('./routes/dashboard');
+var logoutRouter = require('./routes/logout')
 
 var app = express();
 
@@ -26,6 +29,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+  secret:'secret',
+  resave: false,
+  saveUninitialized: true,
+  cookie: {maxAge: 60000}
+}));
+
+
 
 app.use(session({
   cookie: {maxAge: 60000 },
@@ -41,7 +52,11 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/courses', coursesRouter);
 app.use('/about', aboutRouter);
-app.use('/login', loginrouter);
+app.use('/register', registerRouter);
+app.use('/login', loginRouter);
+app.use ('/dashboard', dashboardRouter);
+app.use ('/logout', logoutRouter);
+
 
 // catch 404 and forward to error handler
 
